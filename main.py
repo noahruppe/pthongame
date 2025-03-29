@@ -22,17 +22,17 @@ pipe_gap = 250
 pipe_speed = 3
 pipes = []
 score = 0
-
+# get image of bird
 bird_image = pygame.image.load("flappy.png")
 bird_image = pygame.transform.scale(bird_image, (bird_width, bird_height))
-
+#get image of pipe
 pipe_image = pygame.image.load("green_pipes.png")
 pipe_image = pygame.transform.scale(pipe_image, (pipe_width, HEIGHT))
-
+#display score to main screen
 def display_score(score):
     score_text = FONT.render(f"Score: {score}", True, (0, 0, 0))
     SCREEN.blit(score_text, (10, 10))
-
+# start the game
 def main():
     global bird_y, bird_velocity, pipes, score
     running = True
@@ -45,7 +45,7 @@ def main():
 
     while running:
         SCREEN.fill((135, 206, 250))
-
+        # this is to quit the game and to recognize space as a command and to have the sound
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -54,15 +54,15 @@ def main():
                     bird_velocity = -8
                     flap_sound.play()  # Play the sound when space is pressed
 
-
+        # this sets up the gravity of the game with the jump of the bird
         bird_velocity += gravity
         bird_y += bird_velocity
-
+        # this is to set the distance of pipes and how often they are generated
         if pygame.time.get_ticks() - last_pipe_time > 2500:
             pipe_height = random.randint(100, 400)
             pipes.append({'x': WIDTH, 'top': pipe_height, 'bottom': pipe_height + pipe_gap})
             last_pipe_time = pygame.time.get_ticks()
-
+        # this is to flip top pipe upside down
         for pipe in pipes:
             pipe['x'] -= pipe_speed
             flipped_top_pipe = pygame.transform.flip(pipe_image, False, True)
@@ -70,7 +70,7 @@ def main():
             SCREEN.blit(pipe_image, (pipe['x'], pipe['bottom']))
 
         SCREEN.blit(bird_image, (bird_x, bird_y))
-
+        # this is for collision detection
         for pipe in pipes:
             if (pipe['x'] < bird_x + bird_width and pipe['x'] + pipe_width > bird_x):
                 if bird_y < pipe['top'] and bird_y + bird_height - top_collision_tolerance < pipe['top']:
