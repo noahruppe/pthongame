@@ -33,13 +33,6 @@ def display_score(score):
     score_text = FONT.render(f"Score: {score}", True, (0, 0, 0))
     SCREEN.blit(score_text, (10, 10))
 
-def restart_game():
-    global bird_y, bird_velocity, pipes, score
-    bird_y = HEIGHT // 2
-    bird_velocity = 0
-    pipes = []
-    score = 0
-
 def main():
     global bird_y, bird_velocity, pipes, score
     running = True
@@ -60,8 +53,7 @@ def main():
                 if event.key == pygame.K_SPACE:
                     bird_velocity = -8
                     flap_sound.play()  # Play the sound when space is pressed
-                    if score == -1:
-                        restart_game()
+
 
         bird_velocity += gravity
         bird_y += bird_velocity
